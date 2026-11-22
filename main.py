@@ -84,11 +84,11 @@ def diamond(draw, cx, cy, r, fill=RED):
 
 def ornament_rule(draw, y, x0, x1):
     draw.line([(x0, y), (x1, y)], fill=RULE, width=1)
-    draw.line([(x0, y + 3), (x1, y + 3)], fill=RED, width=1)
+    draw.line([(x0, y + 3), (x1, y + 3)], fill=RED, width=2)
     mid = (x0 + x1) / 2
-    diamond(draw, mid, y + 1, 5)
-    diamond(draw, mid - 26, y + 1, 3)
-    diamond(draw, mid + 26, y + 1, 3)
+    diamond(draw, mid, y + 1, 6)
+    diamond(draw, mid - 28, y + 1, 4)
+    diamond(draw, mid + 28, y + 1, 4)
 
 
 # ---------------------------------------------------------------- hero art
@@ -125,14 +125,19 @@ def draw_skyline(draw, box):
 
 
 def draw_explosion(draw, cx, cy, r):
-    for k in range(8):
-        ang = k * math.pi / 4
-        x2 = cx + r * math.cos(ang)
-        y2 = cy + r * math.sin(ang)
-        draw.line([(cx, cy), (x2, y2)], fill=(255, 170, 60), width=3)
+    # jagged burst: alternating long/short rays, hot core, orange rim
+    for k in range(12):
+        ang = k * math.pi / 6
+        length = r if k % 2 == 0 else int(r * 0.55)
+        x2 = cx + length * math.cos(ang)
+        y2 = cy + length * math.sin(ang)
+        col = (230, 90, 30) if k % 2 == 0 else (255, 170, 60)
+        draw.line([(cx, cy), (x2, y2)], fill=col, width=3)
     draw.ellipse([cx - r // 2, cy - r // 2, cx + r // 2, cy + r // 2],
-                 fill=(255, 190, 80))
-    draw.ellipse([cx - r // 4, cy - r // 4, cx + r // 4, cy + r // 4],
+                 fill=(255, 140, 40))
+    draw.ellipse([cx - r // 3, cy - r // 3, cx + r // 3, cy + r // 3],
+                 fill=(255, 200, 90))
+    draw.ellipse([cx - r // 6, cy - r // 6, cx + r // 6, cy + r // 6],
                  fill=(255, 240, 180))
 
 
